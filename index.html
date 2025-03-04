@@ -3,19 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PWA Test</title>
+    <title>Navigatore Cartelle</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="styles.css">
-    <script>
-        // Registra il Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(reg => console.log('Service Worker registrato', reg))
-                .catch(err => console.error('Errore Service Worker', err));
-        }
-    </script>
 </head>
 <body>
-    <h1>Hello, PWA!</h1>
+    <h1>Navigatore Cartelle</h1>
+    <input type="file" id="folderInput" webkitdirectory multiple>
+    <div id="fileList"></div>
+
+    <script>
+        const folderInput = document.getElementById('folderInput');
+        const fileList = document.getElementById('fileList');
+
+        folderInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            fileList.innerHTML = ''; // Pulisce la lista precedente
+
+            if (files.length > 0) {
+                // Mostra i file selezionati
+                for (const file of files) {
+                    const fileItem = document.createElement('div');
+                    fileItem.textContent = file.webkitRelativePath; // Percorso relativo
+                    fileList.appendChild(fileItem);
+                }
+            } else {
+                fileList.textContent = 'Nessun file selezionato.';
+            }
+        });
+    </script>
 </body>
 </html>
